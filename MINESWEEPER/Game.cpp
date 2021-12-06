@@ -69,6 +69,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 #endif
 				return;
 			}
+
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
@@ -97,6 +98,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	if (winState == 0) {
 		return;
 	}
+	
 	clear_screen();
 
 	if (winState == 1) {

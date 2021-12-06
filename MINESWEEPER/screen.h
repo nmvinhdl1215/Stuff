@@ -26,8 +26,8 @@ INLINE void clear_screen() {
 	printf("\033c");}
 #elif defined _WIN32
 /* Checkout https://docs.microsoft.com/en-us/windows/console/clearing-the-screen for more information on the following code */
-void clear_screen() {
-   HANDLE hStdOut;
+inline int clear_screen() {
+    HANDLE hStdOut;
 
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -65,4 +65,6 @@ void clear_screen() {
     SetConsoleMode(hStdOut, originalMode);
 #endif
 
+    return 0;
+}
 #endif
