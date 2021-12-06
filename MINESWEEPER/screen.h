@@ -25,7 +25,7 @@ __attribute__((always_inline))
 INLINE void clear_screen() {
 	printf("\033c");}
 #elif defined _WIN32
-void clear_screen();
+DWORD clear_screen();
 #endif
 
 #endif
