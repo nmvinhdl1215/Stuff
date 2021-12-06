@@ -373,5 +373,5 @@ MINESWEEPER/main
 MINESWEEPER/GameSave.txt
 *.dll
 *.sln
-*.vcxproj
-*.filters
+MINESWEEPER/Project1.vcxproj
+MINESWEEPER/Project1.vcxproj.filters
