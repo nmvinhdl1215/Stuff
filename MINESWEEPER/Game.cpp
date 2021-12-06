@@ -1,9 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "main.h"
-
+#include "screen.h"
 #include "TileMap.h"
 
+/* Game.cpp - main game file
+ */
+/**
+ * LaunchGame - launch new minesweeper session
+ * @Row:	Number of rows
+ * @Column:	Number of column
+ * @Bomb:	Number of Bomb
+ * @fSave:	Game session file
+ *
+ * Launch a new minsweeper session (windows) with given settings
+ */
 void LaunchGame(int Row, int Column, int Bomb, string fSave)
 {
 
@@ -40,14 +51,22 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	int winState = 0;
 
 	TileMap map;
+#ifdef __unix__
+	if (!map.load("Images/TileSet.png", sf::Vector2u(50, 46), table)) {
+#elif defined  _WIN32
 	if (!map.load("Images\\TileSet.png", sf::Vector2u(50, 46), table)) {
+#endif
 		return;
 	}
 
 	while (window.isOpen() && cursor.conti() && (winState == 0)) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
+#ifdef __unix__
+			if (!map.load("Images/TileSet.png", sf::Vector2u(50, 46), table)) {
+#elif defined _WIN32
 			if (!map.load("Images\\TileSet.png", sf::Vector2u(50, 46), table)) {
+#endif
 				return;
 			}
 			if (event.type == sf::Event::Closed) {
@@ -78,8 +97,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	if (winState == 0) {
 		return;
 	}
-
-	system("cls");
+	clear_screen();
 
 	if (winState == 1) {
 		table.drawTable();
@@ -90,6 +108,6 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 		table.drawTable();
 		cout << "YOU LOSE, NOOB. GO BACK WHEN YOU GETTIN BETTER.\n";
 	}
-	system("pause");
+	getchar();	// On wait. Replace system("pause")
 }
 

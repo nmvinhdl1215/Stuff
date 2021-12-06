@@ -2,15 +2,56 @@
 #include<vector>
 #include<utility>
 #include<queue>
-#include<conio.h>
-#include<windows.h>
+#ifdef _WIN32
+	#include <windows.h>
+#endif
 
 #include "Utility.h"
 #include "Table.h"
 #include "Tile.h"
 
-void Table::changeColor(int x) {
+#ifdef __unix__
+static const char* c_red		= "\033[1;31m";
+static const char* c_green 		= "\033[1;32m";
+static const char* c_yellow		= "\033[1;33m";
+static const char* c_blue		= "\033[1;34m";
+static const char* c_magenta	= "\033[1;35m";
+static const char* c_cyan		= "\033[1;36m";
+static const char* c_reset		= "\033[0m";
+#endif /* not __unix__ */
+#ifdef __GNUC__
+	__attribute__((always_inline))
+#endif /*not __GNUC__ */
+inline void Table::changeColor(int x) {
+#ifdef __unix__
+	switch(x)
+	{
+		case 1:
+			puts(c_red);
+			break;
+		case 2:
+			puts(c_green);
+			break;
+		case 3:
+			puts(c_yellow);
+			break;
+		case 4:
+			puts(c_blue);
+			break;
+		case 5:
+			puts(c_magenta);
+			break;
+		case 6:
+			puts(c_cyan);
+			break;
+		default:
+			puts(c_reset);
+			break;
+	}
+#elif defined _WIN32
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), x);
+#endif
+
 }
 
 Table::Table() {

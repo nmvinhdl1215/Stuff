@@ -1,12 +1,13 @@
 #include "Menu.h"
 #include "main.h"
+#include "screen.h"
 
 void	Menu::Start(int &GAMEMODE)
 {
 	int MenuSelection = 0;
 	do
 	{
-		system("CLS");
+		clear_screen();
 		cout << "***WELCOME TO MINESWEEPER***\n" << endl;
 		cout << "1. New game" << endl;
 		cout << "2. Continue" << endl;
@@ -41,7 +42,7 @@ void	Menu::StartNewGame(int &GAMEMODE)
 	int LevelSelection = 0;
 	while ((LevelSelection != 5) || (GAMEMODE == CHOOSE_DIFFICULTY))
 	{
-		system("CLS");
+		clear_screen();
 		cout << "***CHOOSE A DIFFICULTY***" << endl << endl;
 		cout << "1. Easy" << endl;
 		cout << "2. Medium" << endl;
@@ -85,7 +86,8 @@ void	Menu::StartNewGame(int &GAMEMODE)
 			int Row, Column, Bomb;
 			while (response != 'y')
 			{
-				system("CLS");
+
+				clear_screen();
 				// Ask the player to customize their Map
 				cout << "***CUSTOME GAME***" << endl << endl;
 				cout << "Please enter the number of Rows: ";
