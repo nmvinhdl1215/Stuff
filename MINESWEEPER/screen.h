@@ -63,6 +63,7 @@ void clear_screen() {
 
     // Restore the mode on the way out to be nice to other command-line applications.
     SetConsoleMode(hStdOut, originalMode);
+}
 #endif
 
 #endif
