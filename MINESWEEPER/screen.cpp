@@ -1,7 +1,7 @@
 #include "screen.h"
 #ifdef _WIN32
 /* Checkout https://docs.microsoft.com/en-us/windows/console/clearing-the-screen for more information on the following code */
-void clear_screen() {
+DWORD clear_screen() {
    HANDLE hStdOut;
 
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
