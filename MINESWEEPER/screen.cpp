@@ -1,6 +1,7 @@
 #include "screen.h"
 #ifdef _WIN32
 /* Checkout https://docs.microsoft.com/en-us/windows/console/clearing-the-screen for more information on the following code */
+#ifndef MINE_DEBUG
 DWORD clear_screen() {
    HANDLE hStdOut;
 
@@ -39,4 +40,5 @@ DWORD clear_screen() {
     // Restore the mode on the way out to be nice to other command-line applications.
     SetConsoleMode(hStdOut, originalMode);
 }
+#endif /* not MINE_DEBUG */
 #endif

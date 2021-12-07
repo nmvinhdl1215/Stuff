@@ -1,39 +1,66 @@
+#----------Implicit constant------------
+# Shell program
+SHELL	:=/usr/bin/bash
+# Compilers
 CCX		:=g++
-NFLAGS	:=-Wall -O
-OFLAGS	:=-o 
+# CPP flags
+CXXFLAGS:=-Wall -O2
+# Output flags
+OFLAGS	:=-o
+# Assemble flag (but not link)
 CCFLAGS	:=-c
-LFLAGS	:= -lsfml-graphics -lsfml-window -lsfml-system
+# C preprocessor flag
+CPPFLAGS:=
+# Linker flag
+LDFLAGS	:= -lsfml-window -lsfml-graphics -lsfml-system
+#------------------------------------------
+
+#----------Directories-------------------
+# Build directory
 BUILD	:=./build
+# Output program
 TARGET	:=main
+# Output directory
 APP_DIR	:=.
+
+# Debug directory
 DEB_DIR	:=$(BUILD)/debug
+# Object files directory
 OBJ_DIR	:=$(BUILD)/obj
-INC		:=-I . -I ../include/
-SRC_DIR	:=.
-SRC		:=$(wildcard ./*.cpp)
-OBJ		:=$(SRC:%.cpp=$(OBJ_DIR)/%.o)
-EX 		:=./ex_obj
-all: build $(APP_DIR)/$(TARGET)
 
-$(OBJ_DIR)/%.o: %.cpp
-		@mkdir -p $(@D)
-		$(CCX) $(NFLAGS) $(INC) $(CCFLAGS) $< $(OFLAGS) $@
+# Include flags
+INC		:=-I .
+# Soruce files
+SRC_DIR	:= .
+SRCS	:=$(shell find $(SRC_DIR) -name '*.cpp')
+OBJ		:=$(SRCS:%=$(OBJ_DIR)/%.o)		#Object file(s)
 
-$(APP_DIR)/$(TARGET):$(OBJ)
+#-----------Content----------------------
+
+all: build $(APP_DIR)/$(TARGET)			#all: target  './main'
+
+#Build from Cpp source
+$(OBJ_DIR)/%.cpp.o: %.cpp
 		@mkdir -p $(@D)
-		$(CCX) $(NFLAGS) $(OFLAGS) $(APP_DIR)/$(TARGET) $^  $(LFLAGS)
-	 
+		$(CCX) $(CXXFLAGS) $(INC) $(CCFLAGS) $< $(OFLAGS) $@ 	
+
+
+#The final build step
+$(APP_DIR)/$(TARGET): $(OBJ)
+		$(CCX) $(CFLAGS) $(OFLAGS) $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
+
 .PHONY: all build debug execute clean
 build:
 		@mkdir -p $(APP_DIR)
 		@mkdir -p $(OBJ_DIR)
 
-
 debug: NFLAGS+=-g
 debug: all
 
 execute :all
-execute: $(APP_DIR)/$(TARGET)
+execute	:
+		setsid $(APP_DIR)/$(TARGET)
 
 clean:
-		-@rm -r $(OBJ_DIR)/source/*.o
+		-@rm -rf $(BUILD)
+		-@rm -rf $(APP_DIR)/$(TARGET)
