@@ -20,21 +20,25 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, Table &tab
         for (unsigned int j = 0; j < pos.first; ++j)
         {
             // get the current tile number
-            int tileNumber;
+            int tileNumber = -1;
             if (table.checkMarked(j, i)) {
                 tileNumber = 2;
             }
             else if (table.checkVeiled(j, i)) {
                 tileNumber = 3;
             }
-            else if (table.checkBomb(j, j)) {
+
+            if (tileNumber == -1 && table.checkBomb(j, i)) {
                 tileNumber = 1;
             }
-            else if (!table.getAdj(j, i)) {
-                tileNumber = 0;
-            }
-            else {
-                tileNumber = table.getAdj(j, i) + 3;
+
+            if (tileNumber == -1) {
+                if (table.getAdj(j, i) == 0) {
+                    tileNumber = 0;
+                }
+                else {
+                    tileNumber = table.getAdj(j, i) + 3;
+                }
             }
          
 

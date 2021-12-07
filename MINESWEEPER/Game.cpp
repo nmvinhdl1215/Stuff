@@ -1,9 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "main.h"
-
+#include "screen.h"
 #include "TileMap.h"
 
+/* Game.cpp - main game file
+ */
+/**
+ * LaunchGame - launch new minesweeper session
+ * @Row:	Number of rows
+ * @Column:	Number of column
+ * @Bomb:	Number of Bomb
+ * @fSave:	Game session file
+ *
+ * Launch a new minsweeper session (windows) with given settings
+ */
 void LaunchGame(int Row, int Column, int Bomb, string fSave)
 {
 
@@ -40,21 +51,38 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	int winState = 0;
 
 	TileMap map;
+	int counter = 0;
+
+#ifdef __unix__
+	if (!map.load("Images/TileSet.png", sf::Vector2u(50, 46), table)) {
+#elif defined  _WIN32
 	if (!map.load("Images\\TileSet.png", sf::Vector2u(50, 46), table)) {
+#endif
 		return;
 	}
 
-	while (window.isOpen() && cursor.conti() && (winState == 0)) {
+	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
+#ifdef __unix__
+			if (!map.load("Images/TileSet.png", sf::Vector2u(50, 46), table)) {
+#elif defined _WIN32
 			if (!map.load("Images\\TileSet.png", sf::Vector2u(50, 46), table)) {
+#endif
 				return;
 			}
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
-			if (event.type == sf::Event::MouseButtonReleased) {
-				cursor.changePos(event.mouseButton.y / 46, event.mouseButton.x / 50, table);
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+			if (event.type == sf::Event::MouseButtonPressed) {
+				counter += (winState != 0);
+				if (counter > 0) {
+					window.close();
+				}
+				cursor.changePos(event.mouseButton.y / 47, event.mouseButton.x / 51, table);
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					std::cout << "Left click in : " << event.mouseButton.x << ' ' << event.mouseButton.y << '\n';
 					cursor.leftClick(table);
@@ -63,6 +91,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 					std::cout << "Right click in : " << event.mouseButton.x << ' ' << event.mouseButton.y << '\n';
 					cursor.rightClick(table);
 				}
+				//table.drawTable();
 			}
 
 			window.clear(sf::Color::Black);
@@ -78,8 +107,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	if (winState == 0) {
 		return;
 	}
-
-	system("cls");
+	clear_screen();
 
 	if (winState == 1) {
 		table.drawTable();
@@ -90,6 +118,6 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 		table.drawTable();
 		cout << "YOU LOSE, NOOB. GO BACK WHEN YOU GETTIN BETTER.\n";
 	}
-	system("pause");
+	getchar();	// On wait. Replace system("pause")
 }
 

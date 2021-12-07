@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef _MAIN_H_
+#define _MAIN_H_
 // Constants
 #define IN_MENU 0
 #define IN_GAME 1
@@ -17,3 +17,4 @@ using namespace std;
 #include "Game.h"
 #include "Timer.h"
 
+#endif
