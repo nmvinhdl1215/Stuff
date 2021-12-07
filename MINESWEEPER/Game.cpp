@@ -51,6 +51,8 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 	int winState = 0;
 
 	TileMap map;
+	int counter = 0;
+
 #ifdef __unix__
 	if (!map.load("Images/TileSet.png", sf::Vector2u(50, 46), table)) {
 #elif defined  _WIN32
@@ -59,7 +61,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 		return;
 	}
 
-	while (window.isOpen() && cursor.conti() && (winState == 0)) {
+	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 #ifdef __unix__
@@ -72,8 +74,15 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
-			if (event.type == sf::Event::MouseButtonReleased) {
-				cursor.changePos(event.mouseButton.y / 46, event.mouseButton.x / 50, table);
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+			if (event.type == sf::Event::MouseButtonPressed) {
+				counter += (winState != 0);
+				if (counter > 0) {
+					window.close();
+				}
+				cursor.changePos(event.mouseButton.y / 47, event.mouseButton.x / 51, table);
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					std::cout << "Left click in : " << event.mouseButton.x << ' ' << event.mouseButton.y << '\n';
 					cursor.leftClick(table);
@@ -82,6 +91,7 @@ void LaunchGame(int Row, int Column, int Bomb, string fSave)
 					std::cout << "Right click in : " << event.mouseButton.x << ' ' << event.mouseButton.y << '\n';
 					cursor.rightClick(table);
 				}
+				//table.drawTable();
 			}
 
 			window.clear(sf::Color::Black);
